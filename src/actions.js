@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch'
+
 /**
  * Action creators
  */
@@ -38,4 +40,19 @@ function receivePosts(subreddit, json) {
     posts: json.data/children.map(child => child.data),
     receivedAt.now()
   };
+}
+
+export function fetchPosts(subreddit) {
+  return function (dispatch) {
+    dispatch(requestPosts(subreddit))
+
+    return fetct(`https://www,reddit.com/r/${subreddit}.json`)
+      .then(
+        response => responce.json(),
+        error => console.log('An error occured.', error)
+      )
+      .then(json =>
+        dispath(receivePosts(subreddit, json))
+      );
+  }
 }
