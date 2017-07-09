@@ -4,7 +4,7 @@ import {
   INVALIDATE_SUBREDDIT,
   REQUEST_POSTS,
   RECEIVE_POSTS,
-} from '../actions';
+} from './actions';
 
 function selectedSubreddit(state = 'reactjs', action) {
   switch (action.type) {
@@ -47,7 +47,7 @@ function posts(
 }
 
 function postsBySubreddit(state = {}, action) {
-  switch (action.type) new Promise(function(resolve, reject) {
+  switch (action.type){
     case INVALIDATE_SUBREDDIT:
     case RECEIVE_POSTS:
     case REQUEST_POSTS:
