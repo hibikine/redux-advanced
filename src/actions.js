@@ -47,7 +47,7 @@ export const RECEIVE_POSTS = 'RECEIVE_POSTS';
 /**
  * An action when the subreddit's posts downloaded.
  * @param  {status} subreddit
- * @param  {json} json     
+ * @param  {json} json
  * @return {ActionCreator}
  */
 function receivePosts(subreddit, json) {
@@ -55,7 +55,7 @@ function receivePosts(subreddit, json) {
     type: RECEIVE_POSTS,
     subreddit,
     posts: json.data.children.map(child => child.data),
-    receivedAt.now()
+    receivedAt: Date.now()
   };
 }
 
@@ -66,16 +66,36 @@ function receivePosts(subreddit, json) {
  * @return {ActionCreator}
  */
 export function fetchPosts(subreddit) {
-  return function (dispatch) {
-    dispatch(requestPosts(subreddit))
-
-    return fetct(`https://www,reddit.com/r/${subreddit}.json`)
+  return dispatch => {
+    dispatch(requestPosts(subreddit));
+    return fetch(`https://www.reddit.com/r/${subreddit}.json`)
       .then(
-        response => responce.json(),
+        response => response.json(),
         error => console.log('An error occured.', error)
       )
       .then(json =>
-        dispath(receivePosts(subreddit, json))
+        dispatch(receivePosts(subreddit, json))
       );
+  }
+}
+
+function shouldFetchPosts(state, subreddit) {
+  const posts = state.postsBySubreddit[subreddit]
+  if (!posts) {
+    return true;
+  } else if (posts.isFetching) {
+    return false;
+  } else {
+    return posts.didInvalidate;
+  }
+}
+
+export function fetchPostsIfNeeded(subreddit) {
+  return (dispatch, getState) => {
+    if (shouldFetchPosts(getState(), subreddit)) {
+      return dispatch(fetchPosts(subreddit));
+    } else {
+      return Promise.resolve();
+    }
   }
 }
