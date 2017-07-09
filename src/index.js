@@ -6,6 +6,10 @@ import rootReducer from './reducers'
 
 const loggerMiddleware = createLogger();
 
+/**
+ * Store for fetch subreddit's posts.
+ * @type {Store}
+ */
 const store = createStore(
   rootReducer,
   applyMiddleware(
@@ -18,4 +22,3 @@ store.dispatch(selectSubreddit('reactjs'));
 store
   .dispatch(fetchPosts('reactjs'))
   .then(() => console.log(store.getState()));
-  
