@@ -1,10 +1,8 @@
-import thunkMiddleware from 'redux-thunk'
-import { createLogger } from 'redux-logger'
-import { createStore, applyMiddleware } from 'redux'
-import { selectSubreddit, fetchPostsIfNeeded } from './actions'
-import rootReducer from './reducers'
+import React from 'react'
+import { render } from 'react-dom'
+import Root from './containers/Root';
 
-/**
- * Store for fetch subreddit's posts.
- * @type {Store}
- */
+render(
+  <Root />,
+  document.getElementById('root')
+);
