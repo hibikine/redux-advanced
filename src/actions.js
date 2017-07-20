@@ -70,9 +70,7 @@ export function fetchPosts(subreddit) {
     dispatch(requestPosts(subreddit));
     return fetch(`https://www.reddit.com/r/${subreddit}.json`)
       .then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      )
+        response => response.json())
       .then(json =>
         dispatch(receivePosts(subreddit, json))
       );
@@ -94,8 +92,6 @@ export function fetchPostsIfNeeded(subreddit) {
   return (dispatch, getState) => {
     if (shouldFetchPosts(getState(), subreddit)) {
       return dispatch(fetchPosts(subreddit));
-    } else {
-      return Promise.resolve();
     }
   }
 }
